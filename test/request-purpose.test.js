@@ -1,0 +1,31 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createDiagnostics } from "../src/diagnostics.js";
+
+test("BUG-28 会话、辅助用途、路由和工具集合分别比较前缀，日志不暴露配置", () => {
+  /** @type {any[]} */ const logs = [];
+  const audit = createDiagnostics((line) => logs.push(JSON.parse(line.slice(22))));
+  const value = { status: "ok", hits: [], total: 0 };
+  audit.tool({}, { agent: { id: "audit" }, callId: "child", rootCallId: "root", name: "memory_search" }, value);
+  const content = [{ type: "text", text: JSON.stringify(value) }];
+  const base = { sessionId: "audit", provider: "synthetic-provider", model: "synthetic-model", tools: [], messages: [{ role: "tool", toolCallId: "root", content }] };
+  /** @param {Record<string,unknown>} options */ const request = (options) => { audit.request(options); return logs.at(-1); };
+  const conversation = request(base);
+  const auxiliary = request({ ...base, purpose: "compaction" });
+  assert.equal(conversation.purpose, "unspecified"); assert.equal(auxiliary.purpose, "compaction");
+  assert.equal(auxiliary.retrievals[0].visibility, "complete");
+  assert.equal(auxiliary.commonPrefixMessages, 0);
+  assert.notEqual(auxiliary.requestHash, conversation.requestHash);
+  assert.equal(request(base).commonPrefixMessages, 1);
+  assert.equal(request({ ...base, purpose: "session-title" }).commonPrefixMessages, 0);
+  assert.equal(request({ ...base, model: "different-model" }).commonPrefixMessages, 0);
+  assert.equal(request({ ...base, tools: [{ name: "another-tool" }] }).commonPrefixMessages, 0);
+  assert.equal(request({ ...base, system: "new system" }).commonPrefixMessages, 0);
+  assert.equal(request({ ...base, reasoningEffort: "high" }).commonPrefixMessages, 0);
+  assert.equal(request({ ...base, sessionId: "other" }).commonPrefixMessages, 0);
+  const unknown = request({ ...base, purpose: "SYNTHETIC_SECRET_PURPOSE", apiKey: "SYNTHETIC_SECRET_KEY" });
+  assert.equal(unknown.purpose, "other"); assert.equal(unknown.commonPrefixMessages, null);
+  const unattributed = request({ messages: base.messages });
+  assert.equal(unattributed.attributed, false); assert.equal(unattributed.commonPrefixMessages, null);
+  assert.equal(JSON.stringify(logs).includes("SYNTHETIC_SECRET"), false);
+});

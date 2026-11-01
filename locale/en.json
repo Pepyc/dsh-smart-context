@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Smart Context",
+    "description": "Archives history that DSH compaction has shadowed, and retrieves the original text on demand."
+  }
+}

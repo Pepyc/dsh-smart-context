@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Smart Context">
+  <title>Smart Context</title>
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="#1f2937"/>
+  <rect x="14" y="16" width="36" height="5" rx="2.5" fill="#60a5fa"/>
+  <rect x="14" y="27" width="28" height="5" rx="2.5" fill="#93c5fd"/>
+  <rect x="14" y="38" width="20" height="5" rx="2.5" fill="#bfdbfe" opacity="0.55"/>
+  <circle cx="47" cy="45" r="8" fill="none" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="53" y1="51" x2="58" y2="56" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+</svg>

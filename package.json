@@ -1,0 +1,37 @@
+{
+  "name": "dsh-smart-context",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "DSH 的智能上下文记忆插件：归档已被压缩的历史，按需分页取回原文",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.21.0"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "src/",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:watch": "node --test --watch \"test/**/*.test.js\"",
+    "check": "pnpm run typecheck && pnpm run test"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2"
+  }
+}

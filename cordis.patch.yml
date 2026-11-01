@@ -1,0 +1,6 @@
+# dsh-smart-context 的 bundle patch。
+# 由 DSH 的 plugin_manager 在 install_bundle 时读取，把下面的行插入 profile 组合。
+- insert:
+    - id: smart-context
+      name: 'dsh-smart-context'
+      config: {}

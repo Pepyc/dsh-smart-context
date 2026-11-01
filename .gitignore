@@ -1,0 +1,33 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+*.tsbuildinfo
+
+# 派生索引（运行时生成，可重建）
+smart-context/
+
+# 日志与临时文件
+*.log
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+
+# 环境与密钥
+.env
+.env.*
+*.pem
+*.key
+
+# 真实会话副本（绝不提交）
+*.jsonl
+*.jsonl.zstd
+*.jsonl.zst
+
+# 测试产物
+coverage/
+
